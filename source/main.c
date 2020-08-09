@@ -4,13 +4,18 @@
 #include "../include/memmap.h"
 #include "../include/types.h"
 #include "../include/memdef.h"
+
+#include "../include/point.h"
+#include "../include/velocity.h"
+#include "../include/playerObject.h"
 #include "../sprites/player.h"
 
 OBJ_ATTR obj_buffer[128];
 OBJ_AFFINE *obj_aff_buffer= (OBJ_AFFINE*)obj_buffer; // Object affine-buffer
 
 void obj_test() {
-    int x= 96, y= 32;
+	int x, y;
+	x = 10; y = 10;
     u32 tid= 0, pb= 0;
     OBJ_ATTR *player = &obj_buffer[0];
 
@@ -38,9 +43,20 @@ int main() {
 
     REG_DISPCNT= DCNT_OBJ | DCNT_OBJ_1D;
 
-    obj_test();
+	playerObject player = createPlayerObject(&obj_buffer[0], 0, 0);
 
-    while(1);
+
+    while(1) {
+		vid_vsync();
+		key_poll();
+
+		if ((key_is_down(KEY_A) || key_hit(KEY_A)) && !player.isJumping) {
+			player.vel.dy -= 9 << FIX_SHIFT;
+		}
+
+		updatePlayer(&player, 140);
+		oam_copy(oam_mem, obj_buffer, 1);
+	}
 
     return 0;
 }
