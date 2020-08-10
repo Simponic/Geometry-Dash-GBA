@@ -69,6 +69,8 @@ INLINE void obj_set_pos(OBJ_ATTR *obj, int x, int y);
 INLINE void obj_hide(OBJ_ATTR *oatr);
 INLINE void obj_unhide(OBJ_ATTR *obj, u16 mode);
 void obj_copy(OBJ_ATTR *dst, const OBJ_ATTR *src, u32 count);
+void obj_affine_copy(OBJ_AFFINE *dst, const OBJ_AFFINE *src, u32 count);
+void obj_affine_identity(OBJ_AFFINE *aff);
 
 
 // === INLINES ========================================================

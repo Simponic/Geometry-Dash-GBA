@@ -1,11 +1,11 @@
-toolbox.o: /home/logan/git/GBA-Dash/sprites/toolbox.c \
- /home/logan/git/GBA-Dash/sprites/../include/toolbox.h \
- /home/logan/git/GBA-Dash/sprites/../include/types.h \
- /home/logan/git/GBA-Dash/sprites/../include/memmap.h \
- /home/logan/git/GBA-Dash/sprites/../include/memdef.h \
- /home/logan/git/GBA-Dash/sprites/../include/input.h
-/home/logan/git/GBA-Dash/sprites/../include/toolbox.h:
-/home/logan/git/GBA-Dash/sprites/../include/types.h:
-/home/logan/git/GBA-Dash/sprites/../include/memmap.h:
-/home/logan/git/GBA-Dash/sprites/../include/memdef.h:
-/home/logan/git/GBA-Dash/sprites/../include/input.h:
+toolbox.o: /home/logan/git/gba-dash/source/toolbox.c \
+ /home/logan/git/gba-dash/source/../include/toolbox.h \
+ /home/logan/git/gba-dash/source/../include/types.h \
+ /home/logan/git/gba-dash/source/../include/memmap.h \
+ /home/logan/git/gba-dash/source/../include/memdef.h \
+ /home/logan/git/gba-dash/source/../include/input.h
+/home/logan/git/gba-dash/source/../include/toolbox.h:
+/home/logan/git/gba-dash/source/../include/types.h:
+/home/logan/git/gba-dash/source/../include/memmap.h:
+/home/logan/git/gba-dash/source/../include/memdef.h:
+/home/logan/git/gba-dash/source/../include/input.h:

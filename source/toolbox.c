@@ -63,3 +63,20 @@ void obj_copy(OBJ_ATTR *dst, const OBJ_ATTR *src, u32 count)
 		dst[ii].attr2= src[ii].attr2;
 	}
 }
+
+void obj_affine_copy (OBJ_AFFINE *dst, const OBJ_AFFINE *src, u32 count) {
+	// Copy affine attributes from one pointer to another
+	for (int i = 0; i < count; i++) {
+		dst->pa = src->pa; dst->pb = src->pb;
+		dst->pc = src->pc; dst->pd = src->pd;
+
+		dst++;
+		src++;
+	}
+}
+
+void obj_affine_identity(OBJ_AFFINE *aff) {
+	// Make a pointer point to a identity affine matrix
+	aff->pa = 1 << 8; aff->pb =      0;
+	aff->pc = 0     ; aff->pd = 1 << 8; 
+}

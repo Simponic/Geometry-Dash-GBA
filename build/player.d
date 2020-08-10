@@ -1,1 +1,1 @@
-player.o: /home/logan/git/GBA-Dash/sprites/player.c
+player.o: /home/logan/git/gba-dash/sprites/player.c
