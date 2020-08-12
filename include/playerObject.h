@@ -4,6 +4,7 @@
 #include "toolbox.h"
 #include "fixed.h"
 #include "sinlut.h"
+#include "camera.h"
 
 #ifndef PLAYEROBJECT_H
 #define PLAYEROBJECT_H
@@ -11,6 +12,7 @@
 #define GRAVITY 0.75
 
 typedef struct playerObject {
+	CAMERA camera;
 	VELOCITY vel;
 	POINT pt;
 	u32 rotation; // Rotation amount

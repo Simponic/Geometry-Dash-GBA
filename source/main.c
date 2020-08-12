@@ -8,23 +8,27 @@
 #include "../include/velocity.h"
 #include "../include/playerObject.h"
 #include "../include/map.h"
+#include "../include/camera.h"
 
 #include "../sprites/player.h"
 #include "../sprites/block.h"
+#include "../sprites/spike.h"
 
 OBJ_ATTR obj_buffer[128];
 OBJ_AFFINE *obj_aff_buffer= (OBJ_AFFINE*)obj_buffer; // Object affine-buffer
 
 int main() {
+    memcpy(pal_obj_mem, blockPal, blockPalLen);
     memcpy(&tile_mem[4][0], playerTiles, playerTilesLen);
-    memcpy(pal_obj_mem, playerPal, playerPalLen);
     memcpy(&tile_mem[4][4], blockTiles, blockTilesLen);
+    memcpy(&tile_mem[4][8], spikeTiles, spikeTilesLen);
 
     oam_init(obj_buffer, 128);
 
     REG_DISPCNT= DCNT_OBJ | DCNT_OBJ_1D;
 
 	playerObject player = createPlayerObject(&obj_buffer[0], &obj_aff_buffer[0],0, 0);
+    player.camera = createCamera(10, 0);
 
     while(1) {
 		vid_vsync();
@@ -34,22 +38,34 @@ int main() {
 			player.vel.dy -= 9 << FIX_SHIFT;
 		}
 
-
-		updatePlayer(&player, 120);
+		updatePlayer(&player, 80);
 		obj_affine_copy(obj_aff_mem, player.affine, 1);
 		obj_copy(obj_mem, player.obj, 1);
 
-        OBJ_ATTR tileObject;
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 12; j++){
-                obj_set_attr(&tileObject,
-                    ATTR0_SQUARE,
-                    ATTR1_SIZE_16,
-                    ATTR2_PALBANK(0) | 4
-                );
-                obj_set_pos(&tileObject, (j * 16), (i * 16));
-                if (map1[i][j]) {
-                    obj_copy(obj_mem + (17 * i + j) + 1, &tileObject, 1);
+        OBJ_ATTR blockObject, spikeObject;
+        obj_set_attr(&blockObject,
+            ATTR0_SQUARE,
+            ATTR1_SIZE_16,
+            ATTR2_PALBANK(0) | 4
+        );
+        obj_set_attr(&spikeObject,
+            ATTR0_SQUARE,
+            ATTR1_SIZE_16,
+            ATTR2_PALBANK(0) | 8
+        );
+        int x, y;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 15; j++){
+                x = (j * 16);
+                y = (i * 16);
+                applyCameraShift(&player.camera, &x, &y);
+                if (map1[i][j] == 1) {
+                    obj_set_pos(&blockObject, x, y);
+                    obj_copy(obj_mem + (17 * i + j) + 1, &blockObject, 1);
+                }
+                else if (map1[i][j] == 2) {
+                    obj_set_pos(&spikeObject, x, y);
+                    obj_copy(obj_mem + (17 * i + j) + 1, &spikeObject, 1);
                 }
             }
         }
