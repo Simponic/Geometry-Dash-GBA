@@ -28,17 +28,24 @@ int main() {
     REG_DISPCNT= DCNT_OBJ | DCNT_OBJ_1D;
 
 	playerObject player = createPlayerObject(&obj_buffer[0], &obj_aff_buffer[0],0, 0);
-    player.camera = createCamera(10, 0);
+    player.camera = createCamera(-10, 0);
+	int currentGroundLevel = 140;
+	int currentXLevel = 1;
 
     while(1) {
 		vid_vsync();
+		player.camera.x += 1;
 		key_poll();
+
+		if (player.camera.x % 16 == 15) {
+			currentXLevel++;
+		}
 
 		if ((key_is_down(KEY_A) || key_hit(KEY_A)) && !player.isJumping) {
 			player.vel.dy -= 9 << FIX_SHIFT;
 		}
 
-		updatePlayer(&player, 80);
+		//updatePlayer(&player, 80);
 		obj_affine_copy(obj_aff_mem, player.affine, 1);
 		obj_copy(obj_mem, player.obj, 1);
 
@@ -60,12 +67,15 @@ int main() {
                 y = (i * 16);
                 applyCameraShift(&player.camera, &x, &y);
                 if (map1[i][j] == 1) {
+					if (j == currentXLevel) {
+						updatePlayer(&player, 16 * i - 16);
+					}
                     obj_set_pos(&blockObject, x, y);
-                    obj_copy(obj_mem + (17 * i + j) + 1, &blockObject, 1);
+                    obj_copy(obj_mem + (16 * i + j) + 1, &blockObject, 1);
                 }
                 else if (map1[i][j] == 2) {
                     obj_set_pos(&spikeObject, x, y);
-                    obj_copy(obj_mem + (17 * i + j) + 1, &spikeObject, 1);
+                    obj_copy(obj_mem + (16 * i + j) + 1, &spikeObject, 1);
                 }
             }
         }
