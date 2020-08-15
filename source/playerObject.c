@@ -3,7 +3,7 @@
 void initializePlayerObject (playerObject *object) {
 	// Initialize the point and velocity of a player object
 	object->vel = createVelocity(0, 0);
-	object->pt = createPoint(15 << FIX_SHIFT, 0 << FIX_SHIFT);
+	object->pt = createPoint(0 << FIX_SHIFT, 60 << FIX_SHIFT);
 }
 
 playerObject createPlayerObject (OBJ_ATTR *obj_buffer, OBJ_AFFINE *affine_buffer, int pallete_bank, int tile_id) {

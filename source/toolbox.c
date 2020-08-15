@@ -78,5 +78,5 @@ void obj_affine_copy (OBJ_AFFINE *dst, const OBJ_AFFINE *src, u32 count) {
 void obj_affine_identity(OBJ_AFFINE *aff) {
 	// Make a pointer point to a identity affine matrix
 	aff->pa = 1 << 8; aff->pb =      0;
-	aff->pc = 0     ; aff->pd = 1 << 8; 
+	aff->pc = 0     ; aff->pd = 1 << 8;
 }

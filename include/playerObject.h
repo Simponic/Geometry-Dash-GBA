@@ -29,5 +29,4 @@ void applyGravity();
 void scalePlayer();
 void updatePlayer();
 
-
 #endif // PLAYEROBJECT_H

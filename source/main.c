@@ -18,7 +18,9 @@ OBJ_ATTR obj_buffer[128];
 OBJ_AFFINE *obj_aff_buffer= (OBJ_AFFINE*)obj_buffer; // Object affine-buffer
 
 int main() {
-    memcpy(pal_obj_mem, blockPal, blockPalLen);
+
+    memcpy(pal_obj_mem, blockPal, blockPalLen); // Copy block pallete to pallete bank
+    // Copy sprites to OAM
     memcpy(&tile_mem[4][0], playerTiles, playerTilesLen);
     memcpy(&tile_mem[4][4], blockTiles, blockTilesLen);
     memcpy(&tile_mem[4][8], spikeTiles, spikeTilesLen);
@@ -29,21 +31,28 @@ int main() {
 
 	playerObject player = createPlayerObject(&obj_buffer[0], &obj_aff_buffer[0],0, 0);
     player.camera = createCamera(-10, 0);
-	int currentGroundLevel = 140;
-	int currentXLevel = 1;
-
-    while(1) {
+	int currentXLevel = 0;
+    int playing = 1;
+    while(playing) {
 		vid_vsync();
-		player.camera.x += 1;
+        if (key_is_down(KEY_START) || currentXLevel >= 39) {
+            oam_init(obj_buffer, 128);
+            currentXLevel = 0;
+            player = createPlayerObject(&obj_buffer[0], &obj_aff_buffer[0],0, 0);
+            player.camera = createCamera(-10, 0);
+        }
+
+        player.camera.x += 2;
 		key_poll();
 
-		if (player.camera.x % 16 == 15) {
+		if ((player.camera.x + 10)% 16 == 0) {
 			currentXLevel++;
 		}
 
 		if ((key_is_down(KEY_A) || key_hit(KEY_A)) && !player.isJumping) {
 			player.vel.dy -= 9 << FIX_SHIFT;
 		}
+
 
 		//updatePlayer(&player, 80);
 		obj_affine_copy(obj_aff_mem, player.affine, 1);
@@ -60,26 +69,32 @@ int main() {
             ATTR1_SIZE_16,
             ATTR2_PALBANK(0) | 8
         );
+
         int x, y;
+        int currentMemoryLocation = 3;
         for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 15; j++){
-                x = (j * 16);
+            for (int j = currentXLevel - 1; j < (currentXLevel + 15); j++){
                 y = (i * 16);
+                x = (j * 16);
                 applyCameraShift(&player.camera, &x, &y);
-                if (map1[i][j] == 1) {
-					if (j == currentXLevel) {
-						updatePlayer(&player, 16 * i - 16);
-					}
-                    obj_set_pos(&blockObject, x, y);
-                    obj_copy(obj_mem + (16 * i + j) + 1, &blockObject, 1);
-                }
-                else if (map1[i][j] == 2) {
-                    obj_set_pos(&spikeObject, x, y);
-                    obj_copy(obj_mem + (16 * i + j) + 1, &spikeObject, 1);
+                if (x + 16 > 0 && x <= 240 && (currentXLevel) < 40){
+                    if (map1[i][j] == 1) {
+                        currentMemoryLocation++;
+    					if (j == currentXLevel) {
+    						updatePlayer(&player, 16 * i - 16);
+    					}
+                        obj_set_pos(&blockObject, x, y);
+                        obj_copy(obj_mem + currentMemoryLocation, &blockObject, 1);
+                    }
+                    else if (map1[i][j] == 2) {
+                        currentMemoryLocation++;
+                        obj_set_pos(&spikeObject, x, y);
+                        obj_copy(obj_mem + currentMemoryLocation, &spikeObject, 1);
+
+                    }
                 }
             }
         }
-
 	}
 
     return 0;
