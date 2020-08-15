@@ -15,4 +15,4 @@ Then, just ```make``` in the master directory, and run the game with your favori
 
 Here's a gif of it running on original hardware:
 
-![Demo](https://s7.gifyu.com/images/5f385e7c0590f450705659.md.gif)
+[Demo](https://gifyu.com/image/cQRv)
