@@ -29,12 +29,12 @@ int main() {
 
     REG_DISPCNT= DCNT_OBJ | DCNT_OBJ_1D;
 
-	playerObject player = createPlayerObject(&obj_buffer[0], &obj_aff_buffer[0],0, 0);
+    playerObject player = createPlayerObject(&obj_buffer[0], &obj_aff_buffer[0],0, 0);
     player.camera = createCamera(-10, 0);
-	int currentXLevel = 0;
+    int currentXLevel = 0;
     int playing = 1;
     while(playing) {
-		vid_vsync();
+	vid_vsync();
         if (key_is_down(KEY_START) || currentXLevel >= 39) {
             oam_init(obj_buffer, 128);
             currentXLevel = 0;
@@ -43,20 +43,20 @@ int main() {
         }
 
         player.camera.x += 2;
-		key_poll();
+	key_poll();
 
-		if ((player.camera.x + 10)% 16 == 0) {
-			currentXLevel++;
-		}
+	if ((player.camera.x + 10)% 16 == 0) {
+		currentXLevel++;
+	}
 
-		if ((key_is_down(KEY_A) || key_hit(KEY_A)) && !player.isJumping) {
-			player.vel.dy -= 9 << FIX_SHIFT;
-		}
+	if ((key_is_down(KEY_A) || key_hit(KEY_A)) && !player.isJumping) {
+		player.vel.dy -= 9 << FIX_SHIFT;
+	}
 
 
 		//updatePlayer(&player, 80);
-		obj_affine_copy(obj_aff_mem, player.affine, 1);
-		obj_copy(obj_mem, player.obj, 1);
+	obj_affine_copy(obj_aff_mem, player.affine, 1);
+	obj_copy(obj_mem, player.obj, 1);
 
         OBJ_ATTR blockObject, spikeObject;
         obj_set_attr(&blockObject,
@@ -80,9 +80,9 @@ int main() {
                 if (x + 16 > 0 && x <= 240 && (currentXLevel) < 40){
                     if (map1[i][j] == 1) {
                         currentMemoryLocation++;
-    					if (j == currentXLevel) {
-    						updatePlayer(&player, 16 * i - 16);
-    					}
+    			if (j == currentXLevel) {
+    				updatePlayer(&player, 16 * i - 16);
+    			}
                         obj_set_pos(&blockObject, x, y);
                         obj_copy(obj_mem + currentMemoryLocation, &blockObject, 1);
                     }
