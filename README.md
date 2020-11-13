@@ -1,7 +1,7 @@
 # Geometry-Dash-GBA
 A buggy game of geometry dash on the Game Boy Advance
 
-This project is my first attempt at making something on the GBA that uses tiles and sprites and such. Many headaches were suffered during the making of this project :)
+This project is my first attempt at making something on the GBA that uses tiles and sprites and such. Many headaches were suffered during the making of this project due to the bare-metal style of programming.
 
 ## Setting up environment
 
